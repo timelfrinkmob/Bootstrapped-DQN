@@ -156,9 +156,8 @@ def build_act(make_obs_ph, q_func, num_actions, noisy=False, bootstrap=False, sc
                              updates=[update_eps_expr])
             return act
 
-def build_train(make_obs_ph, q_func, num_actions, optimizer,noisy=False, bootstrap=False, grad_norm_clipping=None, gamma=1.0, double_q=True, noisy=False, scope="deepq", reuse=None):
+def build_train(make_obs_ph, q_func, num_actions, optimizer, bootstrap=False, grad_norm_clipping=None, gamma=1.0, double_q=True, scope="deepq", reuse=None):
     """Creates the train function:
-
     Parameters
     ----------
     make_obs_ph: str -> tf.placeholder or TfInput
@@ -190,7 +189,6 @@ def build_train(make_obs_ph, q_func, num_actions, optimizer,noisy=False, bootstr
         optional scope for variable_scope.
     reuse: bool or None
         whether or not the variables should be reused. To be able to reuse the scope must be given.
-
     Returns
     -------
     act: (tf.Variable, bool, float) -> tf.Variable
@@ -205,7 +203,7 @@ def build_train(make_obs_ph, q_func, num_actions, optimizer,noisy=False, bootstr
     debug: {str: function}
         a bunch of functions to print debug data like q_values.
     """
-    act_f = build_act(make_obs_ph, q_func, bootstrap=bootstrap, num_actions=num_actions, scope=scope, noisy=noisy, reuse=reuse)
+    act_f = build_act(make_obs_ph, q_func, bootstrap=bootstrap, num_actions=num_actions, scope=scope, reuse=reuse)
 
     with tf.variable_scope(scope, reuse=reuse):
         # set up placeholders
@@ -221,11 +219,11 @@ def build_train(make_obs_ph, q_func, num_actions, optimizer,noisy=False, bootstr
 
         with tf.device("/gpu:0"):
             # q network evaluation
-            q_t = q_func(obs_t_input.get(), num_actions, scope="q_func", noisy=noisy, reuse=True)  # reuse parameters from act
+            q_t = q_func(obs_t_input.get(), num_actions, scope="q_func", reuse=True)  # reuse parameters from act
             q_func_vars = U.scope_vars(U.absolute_scope_name("q_func"))
 
             # target q network evalution
-            q_tp1 = q_func(obs_tp1_input.get(), num_actions, scope="target_q_func", noisy=noisy)
+            q_tp1 = q_func(obs_tp1_input.get(), num_actions, scope="target_q_func")
             target_q_func_vars = U.scope_vars(U.absolute_scope_name("target_q_func"))
 
             # q scores for actions which we know were selected in the given state.
@@ -237,7 +235,7 @@ def build_train(make_obs_ph, q_func, num_actions, optimizer,noisy=False, bootstr
             q_tp1_best = []
             q_tp1_best_using_online_net =[]
             if double_q:
-                q_tp1_using_online_net = q_func(obs_tp1_input.get(), num_actions, scope="q_func", noisy=noisy, reuse=True)
+                q_tp1_using_online_net = q_func(obs_tp1_input.get(), num_actions, scope="q_func", reuse=True)
                 for i in range(10):
                     q_tp1_best_using_online_net.append(tf.arg_max(q_tp1_using_online_net[i], 1))
                     q_tp1_best.append(tf.reduce_sum(q_tp1[i] * tf.one_hot(q_tp1_best_using_online_net[i], num_actions), 1))
