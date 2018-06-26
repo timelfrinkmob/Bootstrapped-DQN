@@ -47,6 +47,8 @@ def parse_args():
     boolean_flag(parser, "dueling", default=False, help="whether or not to use dueling model")
     boolean_flag(parser, "bootstrap", default=True, help="whether or not to use bootstrap model")
     boolean_flag(parser, "prioritized", default=False, help="whether or not to use prioritized replay buffer")
+    boolean_flag(parser, "greedy", default=False, help="whether or not to use e-greedy")
+    parser.add_argument("--eps", type=float, default=0.1, help="epsilon when e-greedy")
     parser.add_argument("--prioritized-alpha", type=float, default=0.6, help="alpha parameter for prioritized replay buffer")
     parser.add_argument("--prioritized-beta0", type=float, default=0.4, help="initial value of beta parameters for prioritized replay")
     parser.add_argument("--prioritized-eps", type=float, default=1e-6, help="eps parameter for prioritized replay buffer")
@@ -218,8 +220,12 @@ if __name__ == '__main__':
                     obses_t, actions, rewards, obses_tp1, dones = replay_buffer.sample(args.batch_size)
                     weights = np.ones_like(rewards)
                 # Minimize the error in Bellman's equation and compute TD-error
-                td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights) #, learning_rate.value(num_iters))
-                # Update the priorities in the replay buffer
+                # Minimize the error in Bellman's equation and compute TD-error
+                if args.bootstrap:
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights,
+                                      learning_rate.value(num_iters))
+                else:
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights)                # Update the priorities in the replay buffer
                 if args.prioritized:
                     new_priorities = np.abs(td_errors) + args.prioritized_eps
                     replay_buffer.update_priorities(batch_idxes, new_priorities)
@@ -247,7 +253,6 @@ if __name__ == '__main__':
                 episodes +=1
                 steps_left = args.num_steps - num_iters
                 completion = np.round(num_iters/ args.num_steps, 1)
-                print(rewards_list)
                 rewards_list.append(rew)
                 logger.record_tabular("% completion", completion)
                 logger.record_tabular("steps", num_iters)
