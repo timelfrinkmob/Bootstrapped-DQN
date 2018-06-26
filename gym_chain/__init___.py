@@ -7,3 +7,5 @@ register(
     id='Chainbla-v0',
     entry_point='gym_chain.envs:ChainEnv',
 )
+
+print("!!!!!!!!!!!!!!!!!!!!!!!!")
