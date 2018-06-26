@@ -46,8 +46,10 @@ def parse_args():
     boolean_flag(parser, "noisy", default=False, help="whether or not to NoisyNetwork")
     boolean_flag(parser, "double-q", default=True, help="whether or not to use double q learning")
     boolean_flag(parser, "dueling", default=False, help="whether or not to use dueling model")
-    boolean_flag(parser, "bootstrap", default=True, help="whether or not to use bootstrap model")
+    boolean_flag(parser, "bootstrap", default=False, help="whether or not to use bootstrap model")
     boolean_flag(parser, "prioritized", default=False, help="whether or not to use prioritized replay buffer")
+    boolean_flag(parser, "greedy", default=False, help="whether or not to use e-greedy")
+    parser.add_argument("--eps", type=float, default=0.1, help="epsilon when e-greedy")
     parser.add_argument("--prioritized-alpha", type=float, default=0.6, help="alpha parameter for prioritized replay buffer")
     parser.add_argument("--prioritized-beta0", type=float, default=0.4, help="initial value of beta parameters for prioritized replay")
     parser.add_argument("--prioritized-eps", type=float, default=1e-6, help="eps parameter for prioritized replay buffer")
@@ -172,6 +174,11 @@ if __name__ == '__main__':
             (5e6 / 4, 5e-5) # (approximate_num_iters / 5, 0.01)
         ], outside_value=5e-5)
 
+        if args.greedy:
+            exploration = PiecewiseSchedule([
+                (0, args.eps),
+                (1, args.eps) 
+            ], outside_value=args.eps)
         if args.prioritized:
             replay_buffer = PrioritizedReplayBuffer(args.replay_buffer_size, args.prioritized_alpha)
             beta_schedule = LinearSchedule(approximate_num_iters, initial_p=args.prioritized_beta0, final_p=1.0)
