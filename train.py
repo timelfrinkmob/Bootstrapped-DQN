@@ -26,7 +26,7 @@ from baselines.common.schedules import LinearSchedule, PiecewiseSchedule
 # when updating this to non-deperecated ones, it is important to
 # copy over LazyFrames
 from baselines.common.atari_wrappers_deprecated import wrap_dqn
-from baselines.common.azure_utils import Container
+#from baselines.common.azure_utils import Container
 from model import model, dueling_model, bootstrap_model
 
 
