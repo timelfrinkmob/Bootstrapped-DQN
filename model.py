@@ -20,7 +20,7 @@ def model(img_in, num_actions, scope, reuse=False):
                 # ref: https://arxiv.org/abs/1706.10295
                 out = noisy_dense(out, name='noisy_fc1', size=512, activation_fn=tf.nn.relu)
                 out = noisy_dense(out, name='noisy_fc2', size=num_actions)
-            else:
+             else:
                 out = layers.fully_connected(out, num_outputs=512, activation_fn=tf.nn.relu)
                 out = layers.fully_connected(out, num_outputs=num_actions, activation_fn=None)
 
