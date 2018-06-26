@@ -156,7 +156,7 @@ def build_act(make_obs_ph, q_func, num_actions, noisy=False, bootstrap=False, sc
                              updates=[update_eps_expr])
             return act
 
-def build_train(make_obs_ph, q_func, num_actions, optimizer, bootstrap=False, grad_norm_clipping=None, gamma=1.0, double_q=True, scope="deepq",noisy=False reuse=None):
+def build_train(make_obs_ph, q_func, num_actions, optimizer, bootstrap=False, grad_norm_clipping=None, gamma=1.0, double_q=True, scope="deepq",noisy=False, reuse=None):
     """Creates the train function:
     Parameters
     ----------
