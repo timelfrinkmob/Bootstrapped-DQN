@@ -115,7 +115,7 @@ def maybe_load_model(savedir, container):
 if __name__ == '__main__':
     args = parse_args()
     # Parse savedir and azure container.
-    savedir = args.save_dir + "_" + args.env + "_" + str(args.seed) + "_" + str(args.noisy) + "_" + str(args.bootstrap)
+    savedir = args.save_dir + "_" + args.env + "_" + str(args.seed) + "_" + str(args.noisy) + "_" + str(args.bootstrap) + "_" + str(args.num_steps) 
     logger.configure(savedir,['json','stdout'])
     if args.save_azure_container is not None:
         account_name, account_key, container_name = args.save_azure_container.split(":")
