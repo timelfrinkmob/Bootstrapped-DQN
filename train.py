@@ -117,7 +117,6 @@ if __name__ == '__main__':
     # Parse savedir and azure container.
     savedir = args.save_dir + "_" + args.env
     logger.set_dir(dir)
-    logger.set_output_formats([JSONOutputFormat('json')])
     if args.save_azure_container is not None:
         account_name, account_key, container_name = args.save_azure_container.split(":")
         container = Container(account_name=account_name,
