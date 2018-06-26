@@ -1,5 +1,6 @@
 import argparse
 import gym
+import gym_chain
 import numpy as np
 import os
 import tensorflow as tf
@@ -27,7 +28,6 @@ from baselines.common.schedules import LinearSchedule, PiecewiseSchedule
 # copy over LazyFrames
 #from baselines.common.azure_utils import Container
 from model_gym import model, bootstrap_model
-import gym_chain
 
 
 def parse_args():
