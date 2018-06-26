@@ -284,6 +284,7 @@ if __name__ == '__main__':
                 logger.record_tabular("episodes", episodes)
                 logger.record_tabular("reward (100 epi mean)", np.mean(rewards_list[-100:]))
                 logger.record_tabular("reward", rew)
+                logger.record_tabular("n", args.n)
                 if args.bootstrap:
                     logger.record_tabular("head for episode", (head+1))
                 if not args.noisy:
