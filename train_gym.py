@@ -142,7 +142,7 @@ if __name__ == '__main__':
                 q_func=bootstrap_model,
                 bootstrap=args.bootstrap,
                 num_actions=env.action_space.n,
-                optimizer=tf.train.AdamOptimizer(learning_rate=args.lr,
+                optimizer=tf.train.AdamOptimizer(learning_rate=args.lr),
                 gamma=0.99,
                 grad_norm_clipping=10,
                 double_q=args.double_q,
