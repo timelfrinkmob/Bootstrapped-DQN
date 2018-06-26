@@ -115,7 +115,7 @@ def maybe_load_model(savedir, container):
 if __name__ == '__main__':
     args = parse_args()
     # Parse savedir and azure container.
-    savedir = "models/" + args.save_dir + "_" + args.env + "_" + str(args.seed) + "_" + str(args.noisy) + "_" + str(args.bootstrap) + "_" + str(args.num_steps) 
+    savedir = "models/" + args.save_dir + "_" + args.env + "_" + str(args.seed) + "_" + str(args.noisy) + "_" + str(args.bootstrap) + "_" + str(args.num_steps)
     logger.configure(savedir,['json','stdout'])
     if args.save_azure_container is not None:
         account_name, account_key, container_name = args.save_azure_container.split(":")
@@ -221,7 +221,11 @@ if __name__ == '__main__':
                     obses_t, actions, rewards, obses_tp1, dones = replay_buffer.sample(args.batch_size)
                     weights = np.ones_like(rewards)
                 # Minimize the error in Bellman's equation and compute TD-error
-                td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights) #, learning_rate.value(num_iters))
+                if args.bootstrap:
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights,
+                                      learning_rate.value(num_iters))
+                else:
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights)
                 # Update the priorities in the replay buffer
                 if args.prioritized:
                     new_priorities = np.abs(td_errors) + args.prioritized_eps
