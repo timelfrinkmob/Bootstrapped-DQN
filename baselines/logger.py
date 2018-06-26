@@ -179,6 +179,12 @@ def get_expt_dir():
     return get_dir()
 
 
+def set_dir(dir):
+    Logger.CURRENT.set_dir(dir)
+    
+def set_output_formats(output_formats):
+    Logger.CURRENT.set_output_formats(output_formats)
+
 # ================================================================
 # Backend
 # ================================================================
