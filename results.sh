@@ -3,9 +3,9 @@ for seed in 1 2 3
 do
     for env in Pong Breakout;
     do
-	    for exp in "--no-bootstrap --noisy" "--bootstrap --no-noisy" "--no-bootstrap --no-noisy";
+	    for exp in "--bootstrap --no-noisy --no-greedy" "--no-bootstrap --noisy --no-greedy" "--no-bootstrap --no-noisy --no-greedy"  "--no-bootstrap --no-noisy --greedy" ;
 	    do
-            python train.py --num-steps=10000000 --env="$env" $exp --seed=$seed
+            python train.py --num-steps=100000 --env="$env" $exp --seed=$seed
         done
     done
 done
