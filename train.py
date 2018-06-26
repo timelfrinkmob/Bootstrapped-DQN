@@ -221,7 +221,7 @@ if __name__ == '__main__':
                     obses_t, actions, rewards, obses_tp1, dones = replay_buffer.sample(args.batch_size)
                     weights = np.ones_like(rewards)
                 # Minimize the error in Bellman's equation and compute TD-error
-                td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights, learning_rate.value(num_iters))
+                td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights) #, learning_rate.value(num_iters))
                 # Update the priorities in the replay buffer
                 if args.prioritized:
                     new_priorities = np.abs(td_errors) + args.prioritized_eps
