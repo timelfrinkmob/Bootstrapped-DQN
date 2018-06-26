@@ -144,7 +144,8 @@ if __name__ == '__main__':
                 optimizer=tf.train.AdamOptimizer(learning_rate=args.lr, epsilon=1e-4),
                 gamma=0.99,
                 grad_norm_clipping=10,
-                double_q=args.double_q
+                double_q=args.double_q,
+                noisy=args.noisy
             )
         else:
             act, train, update_target, debug = deepq.build_train(
