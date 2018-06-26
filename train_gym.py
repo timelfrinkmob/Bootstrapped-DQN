@@ -25,7 +25,6 @@ from baselines.common.misc_util import (
 from baselines.common.schedules import LinearSchedule, PiecewiseSchedule
 # when updating this to non-deperecated ones, it is important to
 # copy over LazyFrames
-from baselines.common.atari_wrappers_deprecated import wrap_dqn
 #from baselines.common.azure_utils import Container
 from model_gym import model, bootstrap_model
 
