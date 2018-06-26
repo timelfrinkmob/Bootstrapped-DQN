@@ -250,6 +250,7 @@ if __name__ == '__main__':
                 steps_left = args.num_steps - info["steps"]
                 completion = np.round(info["steps"] / args.num_steps, 1)
                 reward = info["rewards"][-1:]
+                print(reward)
                 logger.record_tabular("% completion", completion)
                 logger.record_tabular("steps", info["steps"])
                 logger.record_tabular("iters", num_iters)
