@@ -187,6 +187,7 @@ if __name__ == '__main__':
 
         rewards_list = []
         episodes = 0
+        rew = 0
 
         # Main training loop
         head = np.random.randint(10)        #Initial head initialisation
@@ -199,8 +200,8 @@ if __name__ == '__main__':
                 action = act(np.array(obs)[None], stochastic=False)[0]
             else:
                 action = act(np.array(obs)[None], update_eps=exploration.value(num_iters))[0]
-            new_obs, rew, done, info = env.step(action)
-            print(rew)
+            new_obs, n_rew, done, info = env.step(action)
+            rew = rew + n_rew
             replay_buffer.add(obs, action, rew, new_obs, float(done))
             obs = new_obs
             if done:
@@ -265,3 +266,4 @@ if __name__ == '__main__':
                 logger.log()
                 logger.log("ETA: " + pretty_eta(int(steps_left / fps_estimate)))
                 logger.log()
+                rew = 0
