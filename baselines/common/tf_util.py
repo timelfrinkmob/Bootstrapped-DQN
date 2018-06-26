@@ -91,6 +91,9 @@ def categorical_sample_logits(X):
     U = tf.random_uniform(tf.shape(X))
     return argmax(X - tf.log(-tf.log(U)), axis=1)
 
+def sample_noise(shape):
+    noise = tf.random_normal(shape)
+    return noise
 
 # ================================================================
 # Inputs
