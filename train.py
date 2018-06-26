@@ -255,7 +255,9 @@ if __name__ == '__main__':
                 logger.record_tabular("iters", num_iters)
                 logger.record_tabular("episodes", len(info["rewards"]))
                 logger.record_tabular("reward (100 epi mean)", np.mean(info["rewards"][-100:]))
-                logger.record_tabular("head for episode", (head+1))
+                logger.record_tabular("reward", info["rewards"])
+                if not args.bootstrap:
+                    logger.record_tabular("head for episode", (head+1))
                 if not args.noisy:
                     logger.record_tabular("exploration", exploration.value(num_iters))
                 if args.prioritized:
