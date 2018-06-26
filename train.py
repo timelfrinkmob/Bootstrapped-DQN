@@ -247,7 +247,6 @@ if __name__ == '__main__':
                 break
 
             if done:
-                print(info["rewards"])
                 steps_left = args.num_steps - info["steps"]
                 completion = np.round(info["steps"] / args.num_steps, 1)
 
@@ -256,7 +255,7 @@ if __name__ == '__main__':
                 logger.record_tabular("iters", num_iters)
                 logger.record_tabular("episodes", len(info["rewards"]))
                 logger.record_tabular("reward (100 epi mean)", np.mean(info["rewards"][-100:]))
-                logger.record_tabular("reward", info["rewards"][-1:])
+                logger.record_tabular("reward", float(info["rewards"][-1:]))
                 if not args.bootstrap:
                     logger.record_tabular("head for episode", (head+1))
                 if not args.noisy:
