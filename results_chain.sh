@@ -5,7 +5,7 @@ do
     do
 	    for exp in "--bootstrap --no-noisy --no-greedy" "--no-bootstrap --noisy --no-greedy" "--no-bootstrap --no-noisy --no-greedy"  "--no-bootstrap --no-noisy --greedy" ;
 	    do
-            python train_gym.py --n=$i $exp --seed=$seed
+            python train_chain.py --n=$i $exp --seed=$seed
         done
     done
 done
