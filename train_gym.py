@@ -200,6 +200,7 @@ if __name__ == '__main__':
             else:
                 action = act(np.array(obs)[None], update_eps=exploration.value(num_iters))[0]
             new_obs, rew, done, info = env.step(action)
+            print(rew)
             replay_buffer.add(obs, action, rew, new_obs, float(done))
             obs = new_obs
             if done:
