@@ -188,7 +188,7 @@ if __name__ == '__main__':
         iteration_time_est = RunningAvg(0.999)
         obs = env.reset()
 
-        rewards = []
+        rewards_list = []
         episodes = 0
 
         # Main training loop
@@ -248,12 +248,12 @@ if __name__ == '__main__':
                 episodes +=1
                 steps_left = args.num_steps - num_iters
                 completion = np.round(num_iters/ args.num_steps, 1)
-                print(rewards)
-                rewards.append(rew)
+                print(rewards_list)
+                rewards_list.append(rew)
                 logger.record_tabular("% completion", completion)
                 logger.record_tabular("steps", num_iters)
                 logger.record_tabular("episodes", episodes)
-                logger.record_tabular("reward (100 epi mean)", np.mean(rewards[-100:]))
+                logger.record_tabular("reward (100 epi mean)", np.mean(rewards_list[-100:]))
                 logger.record_tabular("reward", rew)
                 if args.bootstrap:
                     logger.record_tabular("head for episode", (head+1))
