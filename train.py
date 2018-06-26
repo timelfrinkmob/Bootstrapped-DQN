@@ -43,6 +43,7 @@ def parse_args():
     parser.add_argument("--learning-freq", type=int, default=4, help="number of iterations between every optimization step")
     parser.add_argument("--target-update-freq", type=int, default=10000, help="number of iterations between every target network update")
     # Bells and whistles
+    boolean_flag(parser, "noisy", default=False, help="whether or not to NoisyNetwork")
     boolean_flag(parser, "double-q", default=True, help="whether or not to use double q learning")
     boolean_flag(parser, "dueling", default=False, help="whether or not to use dueling model")
     boolean_flag(parser, "bootstrap", default=True, help="whether or not to use bootstrap model")
@@ -153,7 +154,8 @@ if __name__ == '__main__':
                 optimizer=tf.train.AdamOptimizer(learning_rate=args.lr, epsilon=1e-4),
                 gamma=0.99,
                 grad_norm_clipping=10,
-                double_q=args.double_q
+                double_q=args.double_q,
+                noisy=args.noisy
             )
 
         approximate_num_iters = args.num_steps / 4
@@ -196,6 +198,8 @@ if __name__ == '__main__':
             # Take action and store transition in the replay buffer.
             if args.bootstrap:
                 action = act(np.array(obs)[None], head=head, update_eps=exploration.value(num_iters))[0]
+            elif args.noisy:
+                action = act(np.array(obs)[None], stochastic=False)[0]
             else:
                 action = act(np.array(obs)[None], update_eps=exploration.value(num_iters))[0]
             new_obs, rew, done, info = env.step(action)
@@ -250,7 +254,8 @@ if __name__ == '__main__':
                 logger.record_tabular("episodes", len(info["rewards"]))
                 logger.record_tabular("reward (100 epi mean)", np.mean(info["rewards"][-100:]))
                 logger.record_tabular("head for episode", (head+1))
-                logger.record_tabular("exploration", exploration.value(num_iters))
+                if not args.noisy:
+                    logger.record_tabular("exploration", exploration.value(num_iters))
                 if args.prioritized:
                     logger.record_tabular("max priority", replay_buffer._max_priority)
                 fps_estimate = (float(steps_per_iter) / (float(iteration_time_est) + 1e-6)
