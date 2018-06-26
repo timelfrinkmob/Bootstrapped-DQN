@@ -187,7 +187,10 @@ if __name__ == '__main__':
         steps_per_iter = RunningAvg(0.999)
         iteration_time_est = RunningAvg(0.999)
         obs = env.reset()
-        episode_nr = 0
+
+        rewards = []
+        episodes = 0
+
         # Main training loop
         head = np.random.randint(10)        #Initial head initialisation
         while True:
@@ -226,31 +229,31 @@ if __name__ == '__main__':
                 update_target()
 
             if start_time is not None:
-                steps_per_iter.update(info['steps'] - start_steps)
+                steps_per_iter.update(num_iters - start_steps)
                 iteration_time_est.update(time.time() - start_time)
-            print(info)
             start_time, start_steps = time.time(), num_iters
 
             # Save the model and training state.
-            if num_iters > 0 and (num_iters % args.save_freq == 0 or num_iters > args.num_steps):
+            if num_iters > 0 and (num_iters % args.save_freq == 0 or num_iters> args.num_steps):
                 maybe_save_model(savedir, container, {
                     'replay_buffer': replay_buffer,
                     'num_iters': num_iters,
                     'monitor_state': monitored_env.get_state()
-                }, rew, num_iters)
+                }, rewards, num_iters)
 
-            if num_iters > args.num_steps:
+            if num_iters> args.num_steps:
                 break
 
             if done:
-                episode_nr +=1
+                episodes +=1
                 steps_left = args.num_steps - num_iters
                 completion = np.round(num_iters/ args.num_steps, 1)
-                print(reward)
+
+                rewards.append(rew)
                 logger.record_tabular("% completion", completion)
                 logger.record_tabular("steps", num_iters)
-                logger.record_tabular("iters", num_iters)
-                logger.record_tabular("episodes", episode_nr)
+                logger.record_tabular("episodes", episodes)
+                logger.record_tabular("reward (100 epi mean)", np.mean(rewards[-100:]))
                 logger.record_tabular("reward", rew)
                 if args.bootstrap:
                     logger.record_tabular("head for episode", (head+1))
