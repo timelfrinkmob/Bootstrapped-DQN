@@ -144,7 +144,6 @@ if __name__ == '__main__':
                 num_actions=env.action_space.n,
                 optimizer=tf.train.AdamOptimizer(learning_rate=args.lr),
                 gamma=0.99,
-                grad_norm_clipping=10,
                 double_q=args.double_q,
                 noisy=args.noisy
             )
@@ -155,7 +154,6 @@ if __name__ == '__main__':
                 num_actions=env.action_space.n,
                 optimizer=tf.train.AdamOptimizer(learning_rate=args.lr),
                 gamma=0.99,
-                grad_norm_clipping=10,
                 double_q=args.double_q,
                 noisy=args.noisy
             )
