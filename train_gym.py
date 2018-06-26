@@ -63,7 +63,7 @@ def parse_args():
 def make_env(game_name):
     env = gym.make(game_name)  # Already performs a frame-skip of 4 @ baselines.common.atari_wrappers_deprecated
     monitored_env = SimpleMonitor(env)  # puts rewards and number of steps in info, before environment is wrapped
-    env = wrap_dqn(monitored_env)  # applies a bunch of modification to simplify the observation space (downsample, make b/w)
+    #env = wrap_dqn(monitored_env)  # applies a bunch of modification to simplify the observation space (downsample, make b/w)
     return env, monitored_env
 
 
