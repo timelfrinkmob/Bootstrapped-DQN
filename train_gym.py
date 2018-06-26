@@ -27,7 +27,7 @@ from baselines.common.schedules import LinearSchedule, PiecewiseSchedule
 # copy over LazyFrames
 from baselines.common.atari_wrappers_deprecated import wrap_dqn
 #from baselines.common.azure_utils import Container
-from model_gym import model, dueling_model, bootstrap_model
+from model_gym import model, bootstrap_model
 
 
 def parse_args():
@@ -151,7 +151,7 @@ if __name__ == '__main__':
         else:
             act, train, update_target, debug = deepq.build_train(
                 make_obs_ph=lambda name: U.Uint8Input(env.observation_space.shape, name=name),
-                q_func=dueling_model if args.dueling else model,
+                q_func=model,
                 num_actions=env.action_space.n,
                 optimizer=tf.train.AdamOptimizer(learning_rate=args.lr),
                 gamma=0.99,
