@@ -124,7 +124,7 @@ if __name__ == '__main__':
     
     
     # Parse savedir and azure container.
-    savedir = "models/" + args.save_dir + "_" + args.env + "_" + str(args.seed) + "_" + str(args.bootstrap) + "_" + str(args.noisy) + "_" + str(args.greedy)
+    savedir = "models/" + args.save_dir + "_" + args.env + "_" + str(args.seed) + "_" + str(args.bootstrap) + "_" + str(args.noisy) + "_" + str(args.greedy) + "_" + str(args.n)
     logger.configure(savedir,['json','stdout'])
     if args.save_azure_container is not None:
         account_name, account_key, container_name = args.save_azure_container.split(":")
