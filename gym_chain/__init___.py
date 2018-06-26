@@ -1,6 +1,5 @@
 import logging
 from gym.envs.registration import register
-print("!!!!!!!!!!!!!!!!!!!!!!!!")
 
 logger = logging.getLogger(__name__)
 
