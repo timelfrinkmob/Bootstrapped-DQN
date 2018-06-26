@@ -40,7 +40,7 @@ def parse_args():
     parser.add_argument("--num-steps", type=int, default=int(100000), help="total number of steps to run the environment for")
     parser.add_argument("--batch-size", type=int, default=32, help="number of transitions to optimize at the same time")
     parser.add_argument("--learning-freq", type=int, default=1, help="number of iterations between every optimization step")
-    parser.add_argument("--target-update-freq", type=int, default=100, help="number of iterations between every target network update")
+    parser.add_argument("--target-update-freq", type=int, default=1, help="number of iterations between every target network update")
     # Bells and whistles
     boolean_flag(parser, "noisy", default=False, help="whether or not to NoisyNetwork")
     boolean_flag(parser, "double-q", default=True, help="whether or not to use double q learning")
