@@ -1,5 +1,6 @@
 import logging
 from gym.envs.registration import register
+print("!!!!!!!!!!!!!!!!!!!!!!!!")
 
 logger = logging.getLogger(__name__)
 
@@ -8,4 +9,3 @@ register(
     entry_point='gym_chain.envs:ChainEnv',
 )
 
-print("!!!!!!!!!!!!!!!!!!!!!!!!")
