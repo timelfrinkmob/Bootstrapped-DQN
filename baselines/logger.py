@@ -208,6 +208,12 @@ class Logger(object):
     def log(self, *args, level=INFO):
         if self.level <= level:
             self._do_log(args)
+            
+    def set_dir(self, dir):
+        self.dir = dir
+    
+    def set_output_formats(self, output_formats):
+        self.output_formats = output_formats
 
     # Configuration
     # ----------------------------------------
