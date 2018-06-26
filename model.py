@@ -1,5 +1,6 @@
 import tensorflow as tf
 import tensorflow.contrib.layers as layers
+from baselines.common.tf_util import noisy_dense
 
 
 def model(img_in, num_actions, scope, reuse=False):
@@ -14,8 +15,14 @@ def model(img_in, num_actions, scope, reuse=False):
         out = layers.flatten(out)
 
         with tf.variable_scope("action_value"):
-            out = layers.fully_connected(out, num_outputs=512, activation_fn=tf.nn.relu)
-            out = layers.fully_connected(out, num_outputs=num_actions, activation_fn=None)
+             if noisy:
+                # Apply noisy network on fully connected layers
+                # ref: https://arxiv.org/abs/1706.10295
+                out = noisy_dense(out, name='noisy_fc1', size=512, activation_fn=tf.nn.relu)
+                out = noisy_dense(out, name='noisy_fc2', size=num_actions)
+            else:
+                out = layers.fully_connected(out, num_outputs=512, activation_fn=tf.nn.relu)
+                out = layers.fully_connected(out, num_outputs=num_actions, activation_fn=None)
 
         return out
 
