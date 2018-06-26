@@ -3,7 +3,7 @@ import tensorflow.contrib.layers as layers
 from baselines.common.tf_util import noisy_dense
 
 
-def model(img_in, num_actions, scope, reuse=False):
+def model(img_in, num_actions, scope, noisy=False, reuse=False):
     """As described in https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf"""
     with tf.variable_scope(scope, reuse=reuse):
         out = img_in
