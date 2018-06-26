@@ -165,7 +165,11 @@ if __name__ == '__main__':
             (int(args.num_steps *0.1), 0.1) # (approximate_num_iters / 5, 0.01)
         ], outside_value=0.1)
 
-
+        learning_rate = PiecewiseSchedule([
+            (0, 1e-3),
+            (1, 1e-3)
+        ], outside_value=1e-3)
+        
         if args.prioritized:
             replay_buffer = PrioritizedReplayBuffer(args.replay_buffer_size, args.prioritized_alpha)
             beta_schedule = LinearSchedule(approximate_num_iters, initial_p=args.prioritized_beta0, final_p=1.0)
