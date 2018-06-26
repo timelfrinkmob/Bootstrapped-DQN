@@ -67,9 +67,9 @@ def parse_args():
 def make_env(game_name):
     env = gym.make(game_name)  # Already performs a frame-skip of 4 @ baselines.common.atari_wrappers_deprecated
     env.__init__(n=args.n)
-    monitored_env = SimpleMonitor(env)  # puts rewards and number of steps in info, before environment is wrapped
+    #monitored_env = SimpleMonitor(env)  # puts rewards and number of steps in info, before environment is wrapped
     #env = wrap_dqn(monitored_env)  # applies a bunch of modification to simplify the observation space (downsample, make b/w)
-    return env, monitored_env
+    return env
 
 
 def maybe_save_model(savedir, container, state, rewards, steps):
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     else:
         container = None
     # Create and seed the env.
-    env, monitored_env = make_env(args.env)
+    env = make_env(args.env)
     if args.seed > 0:
         set_global_seeds(args.seed)
         env.unwrapped.seed(args.seed)
@@ -193,7 +193,7 @@ if __name__ == '__main__':
         state = maybe_load_model(savedir, container)
         if state is not None:
             num_iters, replay_buffer = state["num_iters"], state["replay_buffer"],
-            monitored_env.set_state(state["monitor_state"])
+            #monitored_env.set_state(state["monitor_state"])
 
         start_time, start_steps = None, None
         steps_per_iter = RunningAvg(0.999)
@@ -255,8 +255,7 @@ if __name__ == '__main__':
             if num_iters > 0 and (num_iters % args.save_freq == 0 or num_iters> args.num_steps):
                 maybe_save_model(savedir, container, {
                     'replay_buffer': replay_buffer,
-                    'num_iters': num_iters,
-                    'monitor_state': monitored_env.get_state()
+                    'num_iters': num_iters
                 }, rewards, num_iters)
 
             if num_iters> args.num_steps:
