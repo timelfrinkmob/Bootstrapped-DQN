@@ -242,7 +242,7 @@ class Logger(object):
 
 # ================================================================
 
-Logger.DEFAULT = Logger(output_formats=[HumanOutputFormat(sys.stdout)], dir=None)
+Logger.DEFAULT = Logger(output_formats=[JSONOutputFormat('json')], dir=None)
 Logger.CURRENT = Logger.DEFAULT
 
 
