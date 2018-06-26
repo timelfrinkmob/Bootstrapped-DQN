@@ -248,7 +248,7 @@ if __name__ == '__main__':
                 episodes +=1
                 steps_left = args.num_steps - num_iters
                 completion = np.round(num_iters/ args.num_steps, 1)
-                print(rew)
+                print(rewards)
                 rewards.append(rew)
                 logger.record_tabular("% completion", completion)
                 logger.record_tabular("steps", num_iters)
