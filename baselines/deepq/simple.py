@@ -13,7 +13,6 @@ from baselines.common.schedules import LinearSchedule
 
 from baselines import deepq
 from baselines.deepq.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
-from baselines.deepq.utils import ObservationInput
 
 
 class ActWrapper(object):
