@@ -1,13 +1,13 @@
 import gym
 
-from model_gym import model, bootstrap_model
+from model_gym import model, bootstrap_model, mlp
 from baselines import deepq
 
 
 def main():
     env = gym.make("MountainCar-v0")
     # Enabling layer_norm here is import for parameter space noise!
-    model2 = deepq.models.mlp([64], layer_norm=True)
+    model2 = mlp([64], layer_norm=True)
 
     act = deepq.learn(
         env,
