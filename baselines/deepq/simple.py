@@ -186,13 +186,6 @@ def learn(env,
         bootstrap=bootstrap
     )
 
-    act_params = {
-        'make_obs_ph': make_obs_ph,
-        'q_func': q_func,
-        'num_actions': env.action_space.n,
-    }
-
-    act = ActWrapper(act, act_params)
     
     logger.configure('models',['json','stdout'])
 
