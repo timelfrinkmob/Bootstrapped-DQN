@@ -7,9 +7,11 @@ from baselines import deepq
 def main():
     env = gym.make("MountainCar-v0")
     # Enabling layer_norm here is import for parameter space noise!
+    model2 = deepq.models.mlp([64], layer_norm=True)
+
     act = deepq.learn(
         env,
-        q_func=model,
+        q_func=model2,
         lr=1e-3,
         max_timesteps=100000,
         buffer_size=50000,
