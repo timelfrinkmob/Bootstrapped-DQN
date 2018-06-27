@@ -5,7 +5,7 @@ do
     do
 	    for exp in "--bootstrap --no-noisy --no-greedy" "--no-bootstrap --noisy --no-greedy" "--no-bootstrap --no-noisy --no-greedy"  "--no-bootstrap --no-noisy --greedy" ;
 	    do
-            python train.py --num-steps=1000000 --env="$env" $exp --seed=$seed
+            python train.py --num-steps=5000000 --env="$env" $exp --seed=$seed
         done
     done
 done
