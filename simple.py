@@ -255,7 +255,14 @@ def learn(env,
                 kwargs['reset'] = reset
                 kwargs['update_param_noise_threshold'] = update_param_noise_threshold
                 kwargs['update_param_noise_scale'] = True
-            action = act(np.array(obs)[None], update_eps=update_eps, **kwargs)[0]
+            if bootstrap:
+                action = act(np.array(obs)[None], head=head, update_eps=update_eps)[0]
+            elif noisy:
+                action = act(np.array(obs)[None], stochastic=False)[0]
+            elif greedy:
+                action = act(np.array(obs)[None], stochastic=False)[0]
+            else:
+                action = act(np.array(obs)[None], update_eps=update_eps)[0]
             env_action = action
             reset = False
             new_obs, rew, done, _ = env.step(env_action)
@@ -265,6 +272,7 @@ def learn(env,
 
             episode_rewards[-1] += rew
             if done:
+                ep_rew = episode_rewards[-1]
                 obs = env.reset()
                 episode_rewards.append(0.0)
                 reset = True
@@ -291,6 +299,7 @@ def learn(env,
             if done and print_freq is not None and len(episode_rewards) % print_freq == 0:
                 logger.record_tabular("steps", t)
                 logger.record_tabular("episodes", num_episodes)
+                logger.record_tabular("reward", ep_rew)
                 logger.record_tabular("mean 100 episode reward", mean_100ep_reward)
                 logger.record_tabular("% time spent exploring", int(100 * exploration.value(t)))
                 logger.dump_tabular()
