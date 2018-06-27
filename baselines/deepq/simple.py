@@ -175,11 +175,8 @@ def learn(env,
     # capture the shape outside the closure so that the env object is not serialized
     # by cloudpickle when serializing make_obs_ph
 
-    def make_obs_ph(name):
-        return ObservationInput(env.observation_space, name=name)
-
     act, train, update_target, debug = deepq.build_train(
-        make_obs_ph=make_obs_ph,
+        make_obs_ph=lambda name: U.Uint8Input(env.observation_space.shape, name=name),
         q_func=q_func,
         num_actions=env.action_space.n,
         optimizer=tf.train.AdamOptimizer(learning_rate=lr),
