@@ -47,7 +47,7 @@ def bootstrap_model(img_in, num_actions, scope, reuse=False):
         return out_list
     
     
-def _mlp(hiddens, inpt, num_actions, scope, reuse=False, layer_norm=False):
+def _mlp(hiddens, inpt, num_actions, scope, reuse=False, layer_norm=False,noisy=False):
     with tf.variable_scope(scope, reuse=reuse):
         out = inpt
         for hidden in hiddens:
