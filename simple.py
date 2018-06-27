@@ -100,7 +100,10 @@ def learn(env,
           prioritized_replay_beta_iters=None,
           prioritized_replay_eps=1e-6,
           param_noise=False,
-          callback=None):
+          callback=None,
+          bootstrap = False,
+          noisy = False,
+          greedy = False):
     """Train a deepq model.
 
     Parameters
@@ -194,6 +197,9 @@ def learn(env,
     }
 
     act = ActWrapper(act, act_params)
+    
+    logger.configure('models',['json','stdout'])
+
 
     # Create the replay buffer
     if prioritized_replay:
