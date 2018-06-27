@@ -187,7 +187,8 @@ def learn(env,
         optimizer=tf.train.AdamOptimizer(learning_rate=lr),
         gamma=gamma,
         grad_norm_clipping=10,
-        param_noise=param_noise
+        noisy=noisy,
+        bootstrap=bootstrap
     )
 
     act_params = {
@@ -225,6 +226,7 @@ def learn(env,
     saved_mean_reward = None
     obs = env.reset()
     reset = True
+    head = np.random.randint(10)        #Initial head initialisation
 
     with tempfile.TemporaryDirectory() as td:
         td = checkpoint_path or td
@@ -285,7 +287,12 @@ def learn(env,
                 else:
                     obses_t, actions, rewards, obses_tp1, dones = replay_buffer.sample(batch_size)
                     weights, batch_idxes = np.ones_like(rewards), None
-                td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights)
+                if bootstrap:
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights,
+                                      learning_rate.value(num_iters))
+                else:
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights)
+
                 if prioritized_replay:
                     new_priorities = np.abs(td_errors) + prioritized_replay_eps
                     replay_buffer.update_priorities(batch_idxes, new_priorities)
@@ -302,7 +309,11 @@ def learn(env,
                 logger.record_tabular("reward", ep_rew)
                 logger.record_tabular("mean 100 episode reward", mean_100ep_reward)
                 logger.record_tabular("% time spent exploring", int(100 * exploration.value(t)))
+                if bootstrap:
+                    logger.record_tabular("head for episode", (head+1))
                 logger.dump_tabular()
+                head = np.random.randint(10)
+
 
             if (checkpoint_freq is not None and t > learning_starts and
                     num_episodes > 100 and t % checkpoint_freq == 0):
