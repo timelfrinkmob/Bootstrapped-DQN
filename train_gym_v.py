@@ -1,6 +1,7 @@
 import gym
 
 from model_gym import model, bootstrap_model
+from baselines import deepq
 
 
 def main():
