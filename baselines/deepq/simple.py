@@ -276,8 +276,7 @@ def learn(env,
                     obses_t, actions, rewards, obses_tp1, dones = replay_buffer.sample(batch_size)
                     weights, batch_idxes = np.ones_like(rewards), None
                 if bootstrap:
-                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights,
-                                      learning_rate.value(num_iters))
+                    td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights,lr)
                 else:
                     td_errors = train(obses_t, actions, rewards, obses_tp1, dones, weights)
 
